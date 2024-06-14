@@ -1,0 +1,122 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Vitima {
+  id                Int                 @id @default(autoincrement())
+  enderecoId        Int                 @map("endereco_id")
+  endereco          Endereco            @relation(fields: [enderecoId], references: [id])
+  nome              String?
+  nacionalidade     String?
+  estadoCivil       String?             @map("estado_civil")
+  sexo              String?
+  cpf               String?
+  rg                Int
+  telefone          String?
+  email             String?
+  profissao         String?
+  filiacao_materna  String?
+  filiacao_paterna  String?
+  dataNascimento    DateTime?           @map("data_nascimento")
+  MedidasProtetivas MedidasProtetivas[]
+
+  @@map("vitimas")
+}
+
+model Agressor {
+  id                Int                 @id @default(autoincrement())
+  enderecoId        Int                 @map("endereco_id")
+  endereco          Endereco            @relation(fields: [enderecoId], references: [id])
+  nome              String?
+  nacionalidade     String?
+  estadoCivil       String?             @map("estado_civil")
+  sexo              String?
+  cpf               String?
+  rg                Int
+  telefone          String?
+  email             String?
+  profissao         String?
+  filiacao_materna  String?
+  filiacao_paterna  String?
+  dataNascimento    DateTime?           @map("data_nascimento")
+  MedidasProtetivas MedidasProtetivas[]
+
+  @@map("agressores")
+}
+
+model Endereco {
+  id          Int        @id @default(autoincrement())
+  estado      String?
+  cidade      String?
+  cep         String?
+  rua         String?
+  numero      Int?
+  complemento String?
+  latitude    Float?
+  longitude   Float?
+  Policial    Policial[]
+  Vitima      Vitima[]
+  Agressor    Agressor[]
+
+  @@map("enderecos")
+}
+
+model Policial {
+  id             Int       @id @default(autoincrement())
+  enderecoId     Int       @map("endereco_id")
+  endereco       Endereco  @relation(fields: [enderecoId], references: [id])
+  nome           String?
+  cpf            String?
+  rg             Int
+  telefone       String?
+  email          String
+  senha          String
+  dataNascimento DateTime? @map("data_nascimento")
+  matricula      Int?
+  dataAdmissao   DateTime  @map("data_admissao")
+  turno          String?
+  batalhao       String?
+  visitas        Visitas[]
+
+  @@map("policiais")
+}
+
+model MedidasProtetivas {
+  id             Int       @id @default(autoincrement())
+  vitimaId       Int       @map("vitima_id")
+  agressorId     Int       @map("agressor_id")
+  tipoAcao       String    @map("tipo_acao")
+  numProcesso    Int       @map("num_processo")
+  numOcorrencia  Int       @map("num_ocorrencia")
+  orgaoExpedidor String    @map("orgao_expedidor")
+  primeiraVisita Boolean   @map("primeira_visita")
+  nivelFrida     Int       @map("nivel_frida")
+  status         String
+  criadoEm       DateTime  @map("criado_em")
+  expiraEm       DateTime  @map("expira_em")
+  visitas        Visitas[]
+
+  agressor Agressor @relation(fields: [agressorId], references: [id])
+  vitima   Vitima   @relation(fields: [vitimaId], references: [id])
+
+  @@map("medidas_protetivas")
+}
+
+model Visitas {
+  id         Int               @id @default(autoincrement())
+  mpId       Int               @map("mp_id")
+  mp         MedidasProtetivas @relation(fields: [mpId], references: [id])
+  policialId Int               @map("policial_idmp_id")
+  policial   Policial          @relation(fields: [policialId], references: [id])
+  data       DateTime
+  horaInicio DateTime          @map("hora_inicio")
+  horaFim    DateTime          @map("hora_fim")
+  presente   Boolean
+
+  @@map("visitas")
+}
