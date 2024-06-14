@@ -31,7 +31,7 @@ type CreateProtectiveMeasureBodySchema = z.infer<
   typeof createProtectiveMeasureBodySchema
 >;
 
-@Controller('/upload-dados-eproc')
+@Controller('/upload-protective-measure')
 export class CreateProtectiveMeasureController {
   constructor(private prisma: PrismaService) {}
 
