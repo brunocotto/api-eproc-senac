@@ -7,6 +7,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma/prisma.service';
+
 import { z } from 'zod';
 
 const createAggressorBodySchema = z.object({
@@ -77,7 +78,14 @@ export class CreateAggressorController {
       return aggressor;
     } catch (error) {
       if (error.code === 'P2002') {
-        throw new ConflictException('A unique constraint would be violated.');
+        const target = error.meta.target;
+        if (target.includes('cpf')) {
+          throw new ConflictException('The provided CPF is already in use.');
+        } else if (target.includes('rg')) {
+          throw new ConflictException('The provided RG is already in use.');
+        } else if (target.includes('email')) {
+          throw new ConflictException('The provided email is already in use.');
+        }
       }
       throw new BadRequestException(
         'An error occurred while creating the aggressor.',

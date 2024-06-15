@@ -15,10 +15,10 @@ model Vitima {
   nacionalidade     String?
   estadoCivil       String?             @map("estado_civil")
   sexo              String?
-  cpf               String?
-  rg                Int
+  cpf               String?             @unique
+  rg                Int                 @unique
   telefone          String?
-  email             String?
+  email             String?             @unique
   profissao         String?
   filiacao_materna  String?
   filiacao_paterna  String?
@@ -36,10 +36,10 @@ model Agressor {
   nacionalidade     String?
   estadoCivil       String?             @map("estado_civil")
   sexo              String?
-  cpf               String?
-  rg                Int
+  cpf               String?             @unique
+  rg                Int                 @unique
   telefone          String?
-  email             String?
+  email             String?             @unique
   profissao         String?
   filiacao_materna  String?
   filiacao_paterna  String?
@@ -71,17 +71,17 @@ model Policial {
   enderecoId     Int       @map("endereco_id")
   endereco       Endereco  @relation(fields: [enderecoId], references: [id])
   nome           String?
-  cpf            String?
-  rg             Int
+  cpf            String?   @unique
+  rg             Int       @unique
   telefone       String?
-  email          String
+  email          String    @unique
   senha          String
   dataNascimento DateTime? @map("data_nascimento")
-  matricula      Int?
+  matricula      Int?      @unique
   dataAdmissao   DateTime  @map("data_admissao")
   turno          String?
   batalhao       String?
-  visitas        Visitas[]
+  visitas        Visita[]
 
   @@map("policiais")
 }
@@ -99,7 +99,7 @@ model MedidasProtetivas {
   status         String
   criadoEm       DateTime  @map("criado_em")
   expiraEm       DateTime  @map("expira_em")
-  visitas        Visitas[]
+  visitas        Visita[]
 
   agressor Agressor @relation(fields: [agressorId], references: [id])
   vitima   Vitima   @relation(fields: [vitimaId], references: [id])
@@ -107,7 +107,7 @@ model MedidasProtetivas {
   @@map("medidas_protetivas")
 }
 
-model Visitas {
+model Visita {
   id         Int               @id @default(autoincrement())
   mpId       Int               @map("mp_id")
   mp         MedidasProtetivas @relation(fields: [mpId], references: [id])

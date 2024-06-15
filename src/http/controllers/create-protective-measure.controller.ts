@@ -31,7 +31,7 @@ type CreateProtectiveMeasureBodySchema = z.infer<
   typeof createProtectiveMeasureBodySchema
 >;
 
-@Controller('/upload-protective-measure')
+@Controller('/protective-measures')
 export class CreateProtectiveMeasureController {
   constructor(private prisma: PrismaService) {}
 
