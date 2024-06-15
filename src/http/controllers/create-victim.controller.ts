@@ -15,7 +15,7 @@ const createVictimBodySchema = z.object({
   nome: z.string().nullable(),
   nacionalidade: z.string().nullable(),
   estadoCivil: z.string().nullable(),
-  sexo: z.string().nullable(),
+  sexo: z.enum(['Feminino', 'Masculino']),
   cpf: z.string().nullable(),
   rg: z.number(),
   telefone: z.string().nullable(),
