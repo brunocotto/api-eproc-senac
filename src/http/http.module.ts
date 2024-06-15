@@ -5,6 +5,7 @@ import { CreateAggressorController } from './controllers/create-aggressor.contro
 import { CreateVictimController } from './controllers/create-victim.controller';
 import { CreatePoliceOfficerController } from './controllers/create-police-officer.controller';
 import { CreateVisitController } from './controllers/create-visit.controller';
+import { FetchProtectiveMeasuresController } from './controllers/fetch-protective-measures.controller';
 
 @Module({
   imports: [DatabaseModule],
@@ -14,6 +15,7 @@ import { CreateVisitController } from './controllers/create-visit.controller';
     CreateVictimController,
     CreatePoliceOfficerController,
     CreateVisitController,
+    FetchProtectiveMeasuresController,
   ],
 })
 export class HttpModule {}

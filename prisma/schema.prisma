@@ -116,7 +116,7 @@ model Visita {
   id         Int               @id @default(autoincrement())
   mpId       Int               @map("mp_id")
   mp         MedidasProtetivas @relation(fields: [mpId], references: [id])
-  policialId Int               @map("policial_idmp_id")
+  policialId Int               @map("policial_id")
   policial   Policial          @relation(fields: [policialId], references: [id])
   data       DateTime
   horaInicio DateTime          @map("hora_inicio")
