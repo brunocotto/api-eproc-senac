@@ -6,8 +6,8 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "insert": "ts-node ./src/utils/insert.ts",
-    "build": "nest build --output public",
+    "insert": "ts-node ./src/utils/insert.ts"ção de 
+    "build": "prisma generate && nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
