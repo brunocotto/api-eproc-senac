@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "insert": "ts-node ./src/utils/insert.ts",
-    "build": "nest build",
+    "build": "nest build --output publi",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
