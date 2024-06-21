@@ -8,6 +8,7 @@ import {
 import { PrismaService } from 'src/database/prisma/prisma.service';
 
 import { z } from 'zod';
+import { ZodValidationPipe } from '../pipes/zod-validation.pipe';
 
 const createVisitBodySchema = z.object({
   mpId: z.number(),
@@ -24,6 +25,8 @@ const createVisitBodySchema = z.object({
   presente: z.boolean(),
 });
 
+const bodyValidationType = new ZodValidationPipe(createVisitBodySchema);
+
 type CreateVisitBodySchema = z.infer<typeof createVisitBodySchema>;
 
 @Controller('/visits')
@@ -32,7 +35,7 @@ export class CreateVisitController {
 
   @Post()
   @HttpCode(201)
-  async handle(@Body() body: CreateVisitBodySchema) {
+  async handle(@Body(bodyValidationType) body: CreateVisitBodySchema) {
     const { mpId, policialId, data, horaInicio, horaFim, presente } = body;
 
     try {

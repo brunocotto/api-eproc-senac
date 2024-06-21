@@ -9,6 +9,7 @@ import {
 import { PrismaService } from 'src/database/prisma/prisma.service';
 
 import { z } from 'zod';
+import { ZodValidationPipe } from '../pipes/zod-validation.pipe';
 
 const createAggressorBodySchema = z.object({
   enderecoId: z.number(),
@@ -31,6 +32,8 @@ const createAggressorBodySchema = z.object({
     }),
 });
 
+const bodyValidationType = new ZodValidationPipe(createAggressorBodySchema);
+
 type CreateAggressorBodySchema = z.infer<typeof createAggressorBodySchema>;
 
 @Controller('/aggressors')
@@ -39,7 +42,7 @@ export class CreateAggressorController {
 
   @Post()
   @HttpCode(201)
-  async handle(@Body() body: CreateAggressorBodySchema) {
+  async handle(@Body(bodyValidationType) body: CreateAggressorBodySchema) {
     const {
       enderecoId,
       nome,

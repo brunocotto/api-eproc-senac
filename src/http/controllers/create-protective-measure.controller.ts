@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma/prisma.service';
 import { z } from 'zod';
+import { ZodValidationPipe } from '../pipes/zod-validation.pipe';
 
 const createProtectiveMeasureBodySchema = z.object({
   vitimaId: z.number(),
@@ -27,6 +28,10 @@ const createProtectiveMeasureBodySchema = z.object({
   }),
 });
 
+const bodyValidationType = new ZodValidationPipe(
+  createProtectiveMeasureBodySchema,
+);
+
 type CreateProtectiveMeasureBodySchema = z.infer<
   typeof createProtectiveMeasureBodySchema
 >;
@@ -37,7 +42,9 @@ export class CreateProtectiveMeasureController {
 
   @Post()
   @HttpCode(201)
-  async handle(@Body() body: CreateProtectiveMeasureBodySchema) {
+  async handle(
+    @Body(bodyValidationType) body: CreateProtectiveMeasureBodySchema,
+  ) {
     const {
       vitimaId,
       agressorId,

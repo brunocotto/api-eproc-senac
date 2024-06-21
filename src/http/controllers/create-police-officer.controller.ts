@@ -9,6 +9,7 @@ import {
 import { PrismaService } from 'src/database/prisma/prisma.service';
 
 import { z } from 'zod';
+import { ZodValidationPipe } from '../pipes/zod-validation.pipe';
 
 const createPoliceOfficerBodySchema = z.object({
   enderecoId: z.number(),
@@ -32,6 +33,8 @@ const createPoliceOfficerBodySchema = z.object({
   batalhao: z.string().nullable(),
 });
 
+const bodyValidationType = new ZodValidationPipe(createPoliceOfficerBodySchema);
+
 type CreatePoliceOfficerBodySchema = z.infer<
   typeof createPoliceOfficerBodySchema
 >;
@@ -42,7 +45,7 @@ export class CreatePoliceOfficerController {
 
   @Post()
   @HttpCode(201)
-  async handle(@Body() body: CreatePoliceOfficerBodySchema) {
+  async handle(@Body(bodyValidationType) body: CreatePoliceOfficerBodySchema) {
     const {
       enderecoId,
       nome,
