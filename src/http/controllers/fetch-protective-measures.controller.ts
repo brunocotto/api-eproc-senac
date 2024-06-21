@@ -9,14 +9,17 @@ export class FetchProtectiveMeasuresController {
   async fetchAll() {
     const protectiveMeasures = await this.prisma.medidasProtetivas.findMany({
       include: {
-        vitima: true,
+        vitima: {
+          include: {
+            endereco: true,
+          },
+        },
         agressor: true,
         visitas: {
           include: {
             policial: {
               select: {
                 id: true,
-                enderecoId: true,
                 nome: true,
                 cpf: true,
                 rg: true,
