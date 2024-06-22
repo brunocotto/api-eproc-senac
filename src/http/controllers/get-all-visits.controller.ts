@@ -9,7 +9,17 @@ export class GetAllVisitsController {
   @HttpCode(200)
   async handle() {
     try {
-      const visits = await this.prisma.visita.findMany();
+      const visits = await this.prisma.visita.findMany({
+        include: {
+          mp: {
+            include: {
+              agressor: true,
+              vitima: true,
+            },
+          },
+          policial: true,
+        },
+      });
       return visits;
     } catch (error) {
       throw new BadRequestException(
