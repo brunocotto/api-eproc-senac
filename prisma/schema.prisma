@@ -112,6 +112,13 @@ model MedidasProtetivas {
   @@map("medidas_protetivas")
 }
 
+enum VisitaStatus {
+  AGENDADA
+  CONCLUIDA
+  CANCELADA
+  REAGENDADA
+}
+
 model Visita {
   id         Int               @id @default(autoincrement())
   mpId       Int               @map("mp_id")
@@ -121,6 +128,7 @@ model Visita {
   data       DateTime
   horaInicio DateTime          @map("hora_inicio")
   horaFim    DateTime          @map("hora_fim")
+  status     VisitaStatus      @default(AGENDADA)
   presente   Boolean
 
   @@map("visitas")
