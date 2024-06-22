@@ -2,11 +2,11 @@ import { PrismaService } from 'src/database/prisma/prisma.service';
 import { Controller, Get } from '@nestjs/common';
 
 @Controller('/protective-measures')
-export class FetchProtectiveMeasuresController {
+export class GetAllProtectiveMeasuresController {
   constructor(private prisma: PrismaService) {}
 
   @Get()
-  async fetchAll() {
+  async handle() {
     const protectiveMeasures = await this.prisma.medidasProtetivas.findMany({
       include: {
         vitima: {
