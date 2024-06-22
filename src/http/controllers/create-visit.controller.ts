@@ -23,6 +23,9 @@ const createVisitBodySchema = z.object({
     message: 'Invalid date format',
   }),
   presente: z.boolean(),
+  status: z
+    .enum(['AGENDADA', 'CONCLUIDA', 'CANCELADA', 'REAGENDADA'])
+    .optional(),
 });
 
 const bodyValidationType = new ZodValidationPipe(createVisitBodySchema);
@@ -36,7 +39,8 @@ export class CreateVisitController {
   @Post()
   @HttpCode(201)
   async handle(@Body(bodyValidationType) body: CreateVisitBodySchema) {
-    const { mpId, policialId, data, horaInicio, horaFim, presente } = body;
+    const { mpId, policialId, data, horaInicio, horaFim, presente, status } =
+      body;
 
     try {
       const visit = await this.prisma.visita.create({
@@ -47,6 +51,7 @@ export class CreateVisitController {
           horaInicio: new Date(horaInicio),
           horaFim: new Date(horaFim),
           presente,
+          status: status ?? 'AGENDADA',
         },
       });
 
