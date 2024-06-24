@@ -29,6 +29,9 @@ model Vitima {
   filiacao_paterna  String?
   dataNascimento    DateTime?           @map("data_nascimento")
   MedidasProtetivas MedidasProtetivas[]
+  naturalidade      String?
+  instrucao         String?
+  localTrabalho     String?             @map("local_trabalho")
 
   @@map("vitimas")
 }
@@ -50,6 +53,9 @@ model Agressor {
   filiacao_paterna  String?
   dataNascimento    DateTime?           @map("data_nascimento")
   MedidasProtetivas MedidasProtetivas[]
+  naturalidade      String?
+  instrucao         String?
+  localTrabalho     String?             @map("local_trabalho")
 
   @@map("agressores")
 }
