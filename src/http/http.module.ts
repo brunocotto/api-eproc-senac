@@ -8,6 +8,8 @@ import { CreateVisitController } from './controllers/create-visit.controller';
 import { GetAllVisitsController } from './controllers/get-all-visits.controller';
 import { UpdateVisitController } from './controllers/update-visit.controller';
 import { GetAllProtectiveMeasuresController } from './controllers/get-all-protective-measures.controller';
+import { GetAllAgressorsController } from './controllers/get-all-agressors.controller';
+import { GetAllVictimsController } from './controllers/get-all-victims.controller';
 
 @Module({
   imports: [DatabaseModule],
@@ -20,6 +22,8 @@ import { GetAllProtectiveMeasuresController } from './controllers/get-all-protec
     GetAllProtectiveMeasuresController,
     GetAllVisitsController,
     UpdateVisitController,
+    GetAllAgressorsController,
+    GetAllVictimsController,
   ],
 })
 export class HttpModule {}
