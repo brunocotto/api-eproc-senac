@@ -30,6 +30,9 @@ const createAggressorBodySchema = z.object({
     .refine((date) => date === null || !isNaN(Date.parse(date)), {
       message: 'Invalid date format',
     }),
+  naturalidade: z.string().nullable(),
+  instrucao: z.string().nullable(),
+  localTrabalho: z.string().nullable(),
 });
 
 const bodyValidationType = new ZodValidationPipe(createAggressorBodySchema);
@@ -57,6 +60,9 @@ export class CreateAggressorController {
       filiacaoMaterna,
       filiacaoPaterna,
       dataNascimento,
+      naturalidade,
+      instrucao,
+      localTrabalho,
     } = body;
 
     try {
@@ -75,6 +81,9 @@ export class CreateAggressorController {
           filiacao_materna: filiacaoMaterna,
           filiacao_paterna: filiacaoPaterna,
           dataNascimento: dataNascimento ? new Date(dataNascimento) : null,
+          naturalidade,
+          instrucao,
+          localTrabalho,
         },
       });
 
