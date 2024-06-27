@@ -12,7 +12,16 @@ import { z } from 'zod';
 import { ZodValidationPipe } from '../pipes/zod-validation.pipe';
 
 const createAggressorBodySchema = z.object({
-  enderecoId: z.number(),
+  // Campos do endereço
+  estado: z.string().nullable(),
+  cidade: z.string().nullable(),
+  cep: z.string().nullable(),
+  rua: z.string().nullable(),
+  numero: z.number().nullable(),
+  complemento: z.string().nullable(),
+  latitude: z.number().nullable(),
+  longitude: z.number().nullable(),
+  // Campos do agressor
   nome: z.string().nullable(),
   nacionalidade: z.string().nullable(),
   estadoCivil: z.string().nullable(),
@@ -47,7 +56,16 @@ export class CreateAggressorController {
   @HttpCode(201)
   async handle(@Body(bodyValidationType) body: CreateAggressorBodySchema) {
     const {
-      enderecoId,
+      // Campos do endereço
+      estado,
+      cidade,
+      cep,
+      rua,
+      numero,
+      complemento,
+      latitude,
+      longitude,
+      // Campos do agressor
       nome,
       nacionalidade,
       estadoCivil,
@@ -66,9 +84,24 @@ export class CreateAggressorController {
     } = body;
 
     try {
+      // Primeiro, cria o endereço
+      const endereco = await this.prisma.endereco.create({
+        data: {
+          estado,
+          cidade,
+          cep,
+          rua,
+          numero,
+          complemento,
+          latitude,
+          longitude,
+        },
+      });
+
+      // Depois, cria o agressor usando o ID do endereço criado
       const aggressor = await this.prisma.agressor.create({
         data: {
-          enderecoId,
+          enderecoId: endereco.id,
           nome,
           nacionalidade,
           estadoCivil,
@@ -78,12 +111,12 @@ export class CreateAggressorController {
           telefone,
           email,
           profissao,
-          filiacao_materna: filiacaoMaterna,
-          filiacao_paterna: filiacaoPaterna,
-          dataNascimento: dataNascimento ? new Date(dataNascimento) : null,
           naturalidade,
           instrucao,
           localTrabalho,
+          filiacao_materna: filiacaoMaterna,
+          filiacao_paterna: filiacaoPaterna,
+          dataNascimento: dataNascimento ? new Date(dataNascimento) : null,
         },
       });
 
@@ -92,16 +125,14 @@ export class CreateAggressorController {
       if (error.code === 'P2002') {
         const target = error.meta.target;
         if (target.includes('cpf')) {
-          throw new ConflictException('The provided CPF is already in use.');
+          throw new ConflictException('O CPF fornecido já está em uso.');
         } else if (target.includes('rg')) {
-          throw new ConflictException('The provided RG is already in use.');
+          throw new ConflictException('O RG fornecido já está em uso.');
         } else if (target.includes('email')) {
-          throw new ConflictException('The provided email is already in use.');
+          throw new ConflictException('O email fornecido já está em uso.');
         }
       }
-      throw new BadRequestException(
-        'An error occurred while creating the aggressor.',
-      );
+      throw new BadRequestException('Ocorreu um erro ao criar o agressor.');
     }
   }
 }
